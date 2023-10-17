@@ -5,4 +5,44 @@ import ipdb
 
 
 class Scraper:
-    pass
+    def __init__(self):
+        self.courses = []
+    def get_page(self):
+        
+        doc =  BeautifulSoup(requests.get("http://learn-co-curriculum.github.io/site-for-scraping/courses").text, 'html.parser')
+#         for course in doc.select('.post'):
+#             print(type(course))
+#             title = course.select("h2")[0].text if course.select("h2") else ''
+#             date = course.select(".date")[0].text if course.select(".date") else ''
+#             description = course.select("p")[0].text  if course.select("p") else ''
+            
+
+#             new_course = Course(title, date, description)
+#             self.courses.append(new_course)
+
+#             for course in scraper.courses:
+#                 print(f"Title: {course.title}")
+#                 print(f"Schedule: {course.schedule}")
+#                 print(f"Description: {course.description}")
+                
+
+#         ipdb.set_trace()
+        return doc
+# scraper = Scraper()
+# scraper.get_page()
+    def get_courses(self):
+        return self.get_page().select('.post')
+    
+    def make_courses(self):
+        for course in self.get_page().select('.post'):
+
+            title = course.select("h2")[0].text if course.select("h2") else ''
+            date = course.select(".date")[0].text if course.select(".date") else ''
+            description = course.select("p")[0].text  if course.select("p") else ''
+
+            new_course = Course(title, date, description)
+            self.courses.append(new_course)
+        return self.courses
+    def print_courses(self):
+        for course in self.make_courses():
+            print(course)
